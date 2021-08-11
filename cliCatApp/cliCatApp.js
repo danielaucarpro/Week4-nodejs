@@ -25,12 +25,14 @@ switch (cmdLineArguments) {
         break;
     case '--deleteFile':
         console.log(`Are you sure you want to delete ${process.argv[3]} file? (-y/-n)`)
-        if (process.argv[0] === '-y') {
+        process.stdin.resume();
+        console.log(process.argv[0])
+        if (process.argv0[2] === '-y') {
             fs.unlink(`${process.argv[3]}`, (err) => {
                 if (err) throw err;
                 console.log(`You deleted the file ${process.argv[4]}!`)
             })
-        } else if (process.argv[2] === '-n') {
+        } else if (process.argv[1] === '-n') {
             console.log(`The file wasn't deleted!`)
         }
         break;
@@ -42,4 +44,48 @@ switch (cmdLineArguments) {
             });
         })
         break;
+    case '--copyFile':
+        fs.copyFile(`${process.argv[3]}`, `${process.argv[4]}`, (err) => {
+            if (err) throw err;
+            console.log(`Copied file ${process.argv[3]}, to ${process.argv[4]} file.`)
+        })
+        break;
+    case '--moveFile':
+        //must use the path name.
+        fs.rename(`${process.argv[3]}`, `${process.argv[4]}`, (err) => {
+            if (err) throw err;
+            console.log(`Moved file ${process.argv[3]}, to ${process.argv[4]} folder.`)
+        })
+        break;
+    case '--size':
+        fs.stat(`${process.argv[3]}`, (err, stats) => {
+            if (err) throw err;
+            // console.log(stats);
+            console.log(`The file ${process.argv[3]} has ${stats.size} bytes`)
+        })
+        break;
+    case '--view':
+        fs.readFile(`${process.argv[3]}`, (err, data) => {
+            if (err) throw err;
+            // console.log(stats);
+            console.log(` ${data}`)
+        })
+        break;
+    case '--view':
+        fs.readFile(`${process.argv[3]}`, (err, data) => {
+            if (err) throw err;
+            // console.log(stats);
+            console.log(` ${data}`)
+            if (`${process.argv[4]}` === '--pause' || `${process.argv[4]}` === null) {
+                console.log(` ${data}`)
+            } else {
+                console.log(`ERROR! ${process.argv[4]} is not a command!`)
+            }
+        })
+        break;
 }
+
+process.on('exit', (code) => {
+    // console.log(`${code}`);
+    console.log('Good bye!');
+});
