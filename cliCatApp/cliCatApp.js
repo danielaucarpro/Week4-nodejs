@@ -72,23 +72,23 @@ switch (cmdLineArguments) {
                 // console.log(stats);
                 console.log(`${data}`);
             })
-        } else if (`${process.argv[4]}` === '--pause' && `${process.argv[5]}` !== Number) {
-            let lenght = `${[process.argv[5]]}`
+        } else if (`${process.argv[4]}` === '--pause' && Number(process.argv[5]) !== NaN) {
+            let lenght = Number(process.argv[5]);
             const rl = readline.createInterface({
                 input: require('fs').createReadStream(`${process.argv[3]}`),
             });
-            for (i = 0; i <= lenght; i++){
-                rl.on('line', (line)=>{
+            // for (i = 0; i <= lenght; i++){
+            //     rl.on('line', (line)=>{
+            //         console.log(line[i]);
+            //         rl.pause()
+            //     })
+            // }
+            rl.on('line', (line) => {
+                for (i = 0; i <= lenght; i++) {
                     console.log(line);
                     rl.pause()
-                })
-            }
-            // rl.on('line', (line) => {
-            //     for (i = 0; i <= `${process.argv[5]}`; i++) {
-            //         console.log(line);
-            //         rl.pause()
-            //     }
-            // });
+                }
+            });
         } else {
             console.log(`ERROR! ${process.argv[4]} is not a command! Or ${process.argv[5]} is not a number.`)
         }
