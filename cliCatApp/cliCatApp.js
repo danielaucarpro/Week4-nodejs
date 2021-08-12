@@ -1,6 +1,8 @@
 //importing core modules
 const process = require('process');
 const fs = require('fs');
+const readline = require('readline');
+const readlineSync = require('readline-sync');
 
 const cmdLineArguments = process.argv[2];
 
@@ -24,15 +26,14 @@ switch (cmdLineArguments) {
         })
         break;
     case '--deleteFile':
-        console.log(`Are you sure you want to delete ${process.argv[3]} file? (-y/-n)`)
-        process.stdin.resume();
-        console.log(process.argv[0])
-        if (process.argv0[2] === '-y') {
+        // console.log(`Are you sure you want to delete ${process.argv[3]} file? (-y/-n)`)
+        // process.stdin.resume();
+        if (readlineSync.keyInYN(`Are you sure you want to delete ${process.argv[3]} file?`)) {
             fs.unlink(`${process.argv[3]}`, (err) => {
                 if (err) throw err;
-                console.log(`You deleted the file ${process.argv[4]}!`)
+                console.log(`You deleted the file ${process.argv[3]}!`)
             })
-        } else if (process.argv[1] === '-n') {
+        } else {
             console.log(`The file wasn't deleted!`)
         }
         break;
@@ -65,23 +66,32 @@ switch (cmdLineArguments) {
         })
         break;
     case '--view':
-        fs.readFile(`${process.argv[3]}`, (err, data) => {
-            if (err) throw err;
-            // console.log(stats);
-            console.log(` ${data}`)
-        })
-        break;
-    case '--view':
-        fs.readFile(`${process.argv[3]}`, (err, data) => {
-            if (err) throw err;
-            // console.log(stats);
-            console.log(` ${data}`)
-            if (`${process.argv[4]}` === '--pause' || `${process.argv[4]}` === null) {
-                console.log(` ${data}`)
-            } else {
-                console.log(`ERROR! ${process.argv[4]} is not a command!`)
+        if (`${process.argv[4]}` === undefined && `${process.argv[5]}` === undefined) {
+            fs.readFile(`${process.argv[3]}`, (err, data) => {
+                if (err) throw err;
+                // console.log(stats);
+                console.log(`${data}`);
+            })
+        } else if (`${process.argv[4]}` === '--pause' && `${process.argv[5]}` !== Number) {
+            let lenght = `${[process.argv[5]]}`
+            const rl = readline.createInterface({
+                input: require('fs').createReadStream(`${process.argv[3]}`),
+            });
+            for (i = 0; i <= lenght; i++){
+                rl.on('line', (line)=>{
+                    console.log(line);
+                    rl.pause()
+                })
             }
-        })
+            // rl.on('line', (line) => {
+            //     for (i = 0; i <= `${process.argv[5]}`; i++) {
+            //         console.log(line);
+            //         rl.pause()
+            //     }
+            // });
+        } else {
+            console.log(`ERROR! ${process.argv[4]} is not a command! Or ${process.argv[5]} is not a number.`)
+        }
         break;
 }
 
