@@ -1,0 +1,12 @@
+{
+  "name": "creatingnpmpackage",
+  "version": "1.0.0",
+  "description": "My forst NPM package",
+  "main": "fsNPM.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "fsNPM.js"
+  },
+  "author": "Daniel Aucar Felipe",
+  "license": "ISC"
+}

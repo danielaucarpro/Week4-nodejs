@@ -6,12 +6,14 @@
 
 const passwordValidator = require('password-validator');
 
-let string = new passwordValidator();
+let passwordString = new passwordValidator();
 
-string.is().min(6);
-string.has().uppercase();
-string.has().lowercase();
-string.has().symbols(1);
+passwordString.is().min(6);
+passwordString.has().uppercase();
+passwordString.has().lowercase();
+passwordString.has().symbols(1);
 
-console.log(string.validate('isThisValid?'));
-console.log(string.validate('isthisvalid'));
+// Alternative way: passwordString.is().min(6).has().uppercase().has.lowercase().has().symbols();
+
+console.log(passwordString.validate('isThisValid?'));
+console.log(passwordString.validate('isthisvalid'));
